@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@twitter-api-v2/plugin-rate-limit": "^1.1.0",
     "amqplib": "^0.10.3",
     "dotenv": "^16.0.3",
     "telegraf": "^4.12.2",

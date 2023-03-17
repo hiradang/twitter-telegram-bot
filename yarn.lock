@@ -11,6 +11,11 @@
     debug "^4.3.4"
     safe-buffer "~5.1.2"
 
+"@twitter-api-v2/plugin-rate-limit@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@twitter-api-v2/plugin-rate-limit/-/plugin-rate-limit-1.1.0.tgz#a80bbc86f4629575c13ab2f688dafe8b7eb05058"
+  integrity sha512-5nUk0w0s1yzzMe+NLN5BlKzwgl9OHkF1Makb5Xje1ntCO1H1fGq0qli80WRvcrpcwKZcSckRkXd4HEksh2LZ6g==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
