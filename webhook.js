@@ -24,9 +24,9 @@ async function main() {
 	// console.log("Rate Limite Reamaining: ", currentRateLimitForMe);
 
 	// Create a new Twitter client
-	// const addedRules = await client.v2.updateStreamRules({
-	// 	add: [{ value: "#Poker  -is:reply ", tag: "Pk" }],
-	// });
+	const addedRules = await client.v2.updateStreamRules({
+		add: [{ value: "#Blockchain  -is:reply -is:quote -is:retweet", tag: "Bl" }],
+	});
 
 	const stream = await client.v2.searchStream();
 
