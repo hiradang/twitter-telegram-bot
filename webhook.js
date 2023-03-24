@@ -6,10 +6,7 @@ const {
 } = require("@twitter-api-v2/plugin-rate-limit");
 
 const rateLimitPlugin = new TwitterApiRateLimitPlugin();
-const client = new TwitterApi(process.env.BEARER_TOKEN, {
-	plugins: [rateLimitPlugin],
-});
-
+const client = new TwitterApi(process.env.BEARER_TOKEN);
 const bot = new Telegraf(process.env.BOT_TOKEN);
 // exports.handler = async (event) => {
 async function main() {
@@ -24,12 +21,10 @@ async function main() {
 	// console.log("Rate Limite Reamaining: ", currentRateLimitForMe);
 
 	// Create a new Twitter client
-	const addedRules = await client.v2.updateStreamRules({
-		add: [{ value: "#Blockchain  -is:reply -is:quote -is:retweet", tag: "Bl" }],
-	});
 
-	const stream = await client.v2.searchStream();
-
+	// const addedRules = await client.v2.updateStreamRules({
+	// 	add: [{ value: "#Blockchain  -is:reply -is:quote -is:retweet", tag: "Bl" }],
+	// });
 	// Delete rules
 	// const deleteRules = await client.v2.updateStreamRules({
 	// 	delete: {
@@ -40,36 +35,22 @@ async function main() {
 	// Show Rules
 	// Log every rule ID
 	const rules = await client.v2.streamRules();
-	console.log(rules);
+	console.log("Rules: ", rules);
 
-	bot.start(async (ctx) => {
-		ctx.reply("Welcome, starting stream from Twitter!");
-		await stream.reconnect();
+	const stream = await client.v2.searchStream();
+	// stream.removeAllListeners();
+	bot.start((ctx) => {
+		ctx.reply("Welcome, Starting listen Twitter Stream");
 		stream.on(ETwitterStreamEvent.Data, async (tweet) => {
 			// const message = `New tweet from ${tweet.user.name}: ${tweet.text}`;
 			console.log(tweet);
 			try {
-				await bot.telegram.sendMessage(
-					process.env.CHAT_ID,
+				// await bot.telegram.sendMessage(
+				// 	process.env.CHAT_ID,
+				// 	`${tweet.data.text} \n Link: https://twitter.com/i/web/status/${tweet.data.id}`
+				// );
+				ctx.reply(
 					`${tweet.data.text} \n Link: https://twitter.com/i/web/status/${tweet.data.id}`
-				);
-
-				stream.on(
-					// Emitted when Node.js {response} emits a 'error' event (contains its payload).
-					ETwitterStreamEvent.ConnectionError,
-					(err) => console.log("Connection error!", err)
-				);
-
-				stream.on(
-					// Emitted when Node.js {response} is closed by remote or using .close().
-					ETwitterStreamEvent.ConnectionClosed,
-					() => console.log("Connection has been closed.")
-				);
-
-				stream.on(
-					// Emitted when a Twitter sent a signal to maintain connection active
-					ETwitterStreamEvent.DataKeepAlive,
-					() => console.log("Twitter has a keep-alive packet.")
 				);
 			} catch (error) {
 				if (
@@ -85,11 +66,12 @@ async function main() {
 					);
 				} else {
 					console.error(error);
-					await bot.telegram.sendMessage(
-						process.env.CHAT_ID,
-						`Error: Code ${error.code}, rateLimit: ${error.rateLimit}`
-					);
-					await stream.reconnect();
+					// await bot.telegram.sendMessage(
+					// 	process.env.CHAT_ID,
+					// 	`Error: Code ${error.code}, rateLimit: ${error.rateLimit}`
+					// );
+					ctx.reply(`Error: Code ${error.code}, rateLimit: ${error.rateLimit}`);
+					stream.off();
 				}
 			}
 		});
@@ -97,7 +79,8 @@ async function main() {
 
 	bot.command("stop", (ctx) => {
 		ctx.reply("Stop streaming Twitter!");
-		stream.destroy();
+		// stream.destroy();
+		stream.off();
 	});
 
 	bot.launch();
