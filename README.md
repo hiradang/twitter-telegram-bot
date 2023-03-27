@@ -2,6 +2,8 @@ Tính năng: Stream Filter các tweet, retweet, reply, quote trên twitter, sau 
 
  - Tạo bot Telegram: https://core.telegram.org/bots#:~:text=%40BotSupport.-,How%20Do%20I%20Create%20a%20Bot%3F,who%20has%20your%20token%20will%20have%20full%20control%20over%20your%20bot.,-What%20Next%3F -> BOT_TOKEN
 
+ - Kiêm tra CHAT_ID: https://www.alphr.com/find-chat-id-telegram/#:~:text=Click%20on%20the%20Start%20button,listed%20below%2C%20next%20to%20id. -> CHAT_ID (.env)
+
  - Nhập BEARER_TOKEN (.env)
 
  - Chạy ứng dụng:
