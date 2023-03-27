@@ -2,11 +2,13 @@
 // https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/quick-start
 
 const needle = require("needle");
+const { Telegraf } = require("telegraf");
 require("dotenv/config");
 
 // The code below sets the bearer token from your environment variables
 // To set environment variables on macOS or Linux, run the export command below from the terminal:
 // export BEARER_TOKEN='YOUR-TOKEN'
+const bot = new Telegraf(process.env.BOT_TOKEN);
 const token = process.env.BEARER_TOKEN;
 
 const rulesURL = "https://api.twitter.com/2/tweets/search/stream/rules";
@@ -91,10 +93,14 @@ function streamConnect(retryAttempt) {
 	});
 
 	stream
-		.on("data", (data) => {
+		.on("data", async (data) => {
 			try {
 				const json = JSON.parse(data);
 				console.log(json);
+				await bot.telegram.sendMessage(
+					process.env.CHAT_ID,
+					`${json.data.text} \n Link: https://twitter.com/i/web/status/${json.data.id}`
+				);
 				// A successful connection resets retry count.
 				retryAttempt = 0;
 			} catch (e) {
@@ -103,6 +109,7 @@ function streamConnect(retryAttempt) {
 					"This stream is currently at the maximum allowed connection limit."
 				) {
 					console.log(data.detail);
+					await bot.telegram.sendMessage(process.env.CHAT_ID, data.detail);
 					process.exit(1);
 				} else {
 					// Keep alive signal received. Do nothing.
@@ -117,8 +124,12 @@ function streamConnect(retryAttempt) {
 				// This reconnection logic will attempt to reconnect when a disconnection is detected.
 				// To avoid rate limits, this logic implements exponential backoff, so the wait time
 				// will increase if the client cannot reconnect to the stream.
-				setTimeout(() => {
+				setTimeout(async () => {
 					console.warn("A connection error occurred. Reconnecting...");
+					await bot.telegram.sendMessage(
+						process.env.CHAT_ID,
+						`A connection error occurred. Reconnecting...`
+					);
 					streamConnect(++retryAttempt);
 				}, 2 ** retryAttempt);
 			}
