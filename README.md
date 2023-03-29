@@ -2,16 +2,14 @@ Tính năng: Stream Filter các tweet, retweet, reply, quote trên twitter, sau 
 
  - Tạo bot Telegram: https://core.telegram.org/bots#:~:text=%40BotSupport.-,How%20Do%20I%20Create%20a%20Bot%3F,who%20has%20your%20token%20will%20have%20full%20control%20over%20your%20bot.,-What%20Next%3F -> BOT_TOKEN
 
- - Kiêm tra CHAT_ID: https://www.alphr.com/find-chat-id-telegram/#:~:text=Click%20on%20the%20Start%20button,listed%20below%2C%20next%20to%20id. -> CHAT_ID (.env)
-
  - Nhập BEARER_TOKEN (.env)
 
  - Chạy ứng dụng:
   + step 1: yarn
-  + step 2: node example.js
+  + step 2: node exampleV2.js
 
 * Custom Rule khi filted stream Tweet:
-Tại dòng 23 file example.js, đang sử dụng dụng rule filter là hagstag: #HungLV (value của Rule), với tag: Bl (tag của Rule).  
+Tại dòng 24 file exampleV2.js, đang sử dụng dụng rule filter là hagstag: #HungLV (value của Rule), với tag: Bl (tag của Rule).  
   - Thay đổi value để search stream các nội dung khác. 
 
 * Lưu ý:
