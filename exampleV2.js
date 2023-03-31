@@ -138,8 +138,6 @@ function streamConnect(retryAttempt, ctx) {
 
 bot.start(async (ctx) => {
 	ctx.reply("Greate, Stream is connected");
-	let currentRules;
-
 	try {
 		// Gets the complete list of rules currently applied to the stream
 		const currentRules = await getAllRules();
@@ -158,7 +156,9 @@ bot.start(async (ctx) => {
 });
 
 bot.help((ctx) => {
-	ctx.reply("Hi, this bot is developed by Em Hùng Eo Vì🍑🍑");
+	ctx.reply(
+		"Hi, this bot is developed by Em Hùng Eo Vì🍑🍑\n/start: Bắt đầu stream tweet\n/stop: Dừng stream tweet"
+	);
 });
 
 bot.command("stop", (ctx) => {
